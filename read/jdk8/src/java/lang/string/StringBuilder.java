@@ -145,7 +145,7 @@ public final class StringBuilder
     }
 
     @Override
-    public StringBuilder appendCodePoint(int codePoint) throws IllegalAccessException {
+    public StringBuilder appendCodePoint(int codePoint){
         super.appendCodePoint(codePoint);
         return this;
     }

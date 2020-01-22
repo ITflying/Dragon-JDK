@@ -114,7 +114,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      *
      * @param newLength the new length
      */
-    private void setLength(int newLength) {
+    public void setLength(int newLength) {
         if (newLength < 0) {
             throw new StringIndexOutOfBoundsException(newLength);
         }
@@ -272,6 +272,17 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
         int len = sb.length();
         ensureCapacityInternal(count + len);
         sb.getChars(0, len, value, count);
+        count += len;
+        return this;
+    }
+
+    AbstractStringBuilder append(AbstractStringBuilder asb) {
+        if (asb == null) {
+            return appendNull();
+        }
+        int len = asb.length();
+        ensureCapacityInternal(count + len);
+        asb.getChars(0, len, value, count);
         count += len;
         return this;
     }
@@ -478,7 +489,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * @return a reference to this object
      * @throws IllegalAccessException if the specified codePoint isn't  a vlid Unicode code point
      */
-    public AbstractStringBuilder appendCodePoint(int codePoint) throws IllegalAccessException {
+    public AbstractStringBuilder appendCodePoint(int codePoint){
         final int count = this.count;
         
         if (Character.isBmpCodePoint(codePoint)){
@@ -491,7 +502,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
 //            Character.toSurrogates(codePoint, value, count);
             this.count = count + 2;
         }else{
-            throw new IllegalAccessException();
+            throw new IllegalArgumentException();
         }
         return this;
     }
